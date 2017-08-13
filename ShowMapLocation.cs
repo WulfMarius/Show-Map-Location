@@ -34,8 +34,8 @@ namespace ShowMapLocation
             mapElementSaveData.m_ActiveMissionTimerIDs = new List<string>();
             mapElementSaveData.m_ActiveMissionIDs = new List<string>();
 
-            Transform child = __instance.m_BigSpritePoolParent.GetChild(0);
-            child.GetComponent<MapIcon>().DoSetup(mapElementSaveData, __instance.m_BigSpriteActiveObjects, 1000, MapIcon.MapIconType.TopIcon);
+            Transform child = __instance.m_DetailEntryPoolParent.GetChild(0);
+            child.GetComponent<MapIcon>().DoSetup(mapElementSaveData, __instance.m_DetailEntryActiveObjects, 1000, MapIcon.MapIconType.TopIcon);
 
             Dictionary<Transform, MapElementSaveData> m_TransformToMapData = panel_Map.Field("m_TransformToMapData").GetValue<Dictionary<Transform, MapElementSaveData>>();
             m_TransformToMapData.Add(child, mapElementSaveData);
