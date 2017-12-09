@@ -19,6 +19,12 @@ namespace ShowMapLocation
                 return;
             }
 
+            if (__instance.m_DetailEntryPoolParent.childCount <= 0)
+            {
+                Debug.Log("Could not create map location because m_DetailEntryPoolParent has no children");
+                return;
+            }
+
             Traverse panel_Map = Traverse.Create(__instance);
             Traverse worldPositionToMapPosition = panel_Map.Method("WorldPositionToMapPosition", new Type[] { typeof(String), typeof(Vector3) });
             Vector3 mapPosition = worldPositionToMapPosition.GetValue<Vector3>(new object[] { sceneName, GameManager.GetPlayerTransform().localPosition });
