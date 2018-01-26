@@ -17,12 +17,23 @@ namespace ShowMapLocation
     [HarmonyPatch(typeof(Panel_Map), "LoadMapElementsForScene")]
     internal class Panel_Map_LoadMapElementsForScene
     {
-        public static void Postfix(Panel_Map __instance, string sceneName)
+        public static void Prefix(Panel_Map __instance, string sceneName)
         {
-            if (SceneManager.GetActiveScene().name == sceneName)
+            var currentScene = NormalizeSceneName(GameManager.m_ActiveScene);
+            if (currentScene == sceneName)
             {
                 ShowMapLocation.ShowLocationMarker(sceneName);
             }
+        }
+
+        private static string NormalizeSceneName(string sceneName)
+        {
+            if (!GameManager.IsStoryMode() && sceneName == "MountainTownRegion")
+            {
+                return "MountainTownRegionSandbox";
+            }
+
+            return sceneName;
         }
     }
 }
