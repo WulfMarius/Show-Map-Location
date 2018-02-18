@@ -14,6 +14,15 @@ namespace ShowMapLocation
         }
     }
 
+    [HarmonyPatch(typeof(Panel_Map), "Deserialize")]
+    internal class Panel_Map_Deserialize
+    {
+        public static void Postfix()
+        {
+            ShowMapLocation.CleanupLocationMarkers();
+        }
+    }
+
     [HarmonyPatch(typeof(Panel_Map), "LoadMapElementsForScene")]
     internal class Panel_Map_LoadMapElementsForScene
     {
@@ -22,7 +31,7 @@ namespace ShowMapLocation
             var currentScene = NormalizeSceneName(GameManager.m_ActiveScene);
             if (currentScene == sceneName)
             {
-                ShowMapLocation.ShowLocationMarker(sceneName);
+                ShowMapLocation.ShowLocationMarker();
             }
         }
 
