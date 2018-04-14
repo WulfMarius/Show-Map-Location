@@ -1,0 +1,18 @@
+﻿{
+	"name": "Show-Map-Location",
+	"description": "Marks your current location on the region map.",
+	"url": "https://github.com/WulfMarius/Show-Map-Location",
+	"releases": [
+		{
+			"version": "2.0.0",
+			"url": "https://github.com/WulfMarius/Show-Map-Location/releases/tag/2.0.0",
+			"changes": "updated to work with TLD V1.27",
+			"dependencies": [],
+			"assets": [
+				{
+					"url": "https://github.com/WulfMarius/Show-Map-Location/releases/download/2.0.0/Show-Map-Location-V2.0.0.zip"
+				}
+			]
+		}
+	]
+}
