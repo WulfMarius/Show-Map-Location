@@ -10,7 +10,7 @@ namespace ShowMapLocation
     {
         public static void Prefix()
         {
-            ShowMapLocation.HideLocationMarker();
+            Implementation.HideLocationMarker();
         }
     }
 
@@ -19,7 +19,7 @@ namespace ShowMapLocation
     {
         public static void Postfix()
         {
-            ShowMapLocation.CleanupLocationMarkers();
+            Implementation.CleanupLocationMarkers();
         }
     }
 
@@ -31,7 +31,7 @@ namespace ShowMapLocation
             var currentScene = NormalizeSceneName(GameManager.m_ActiveScene);
             if (currentScene == sceneName)
             {
-                ShowMapLocation.ShowLocationMarker();
+                Implementation.ShowLocationMarker();
             }
         }
 
