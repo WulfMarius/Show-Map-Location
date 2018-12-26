@@ -1,48 +1,35 @@
 ﻿using Harmony;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace ShowMapLocation
 {
-    [HarmonyPatch(typeof(Panel_Map), "UnloadMapElements")]
-    internal class Panel_Map_UnloadMapElements
+    [HarmonyPatch(typeof(Panel_Map), "ResetToNormal")]
+    internal class Panel_Map_ResetToNormal
     {
-        public static void Prefix()
+        internal static void Prefix(Panel_Map __instance, ref int opts)
         {
-            Implementation.HideLocationMarker();
-        }
-    }
-
-    [HarmonyPatch(typeof(Panel_Map), "Deserialize")]
-    internal class Panel_Map_Deserialize
-    {
-        public static void Postfix()
-        {
-            Implementation.CleanupLocationMarkers();
-        }
-    }
-
-    [HarmonyPatch(typeof(Panel_Map), "LoadMapElementsForScene")]
-    internal class Panel_Map_LoadMapElementsForScene
-    {
-        public static void Prefix(Panel_Map __instance, string sceneName)
-        {
-            var currentScene = NormalizeSceneName(GameManager.m_ActiveScene);
-            if (currentScene == sceneName)
+            if (GameManager.IsStoryMode())
             {
-                Implementation.ShowLocationMarker();
+                return;
+            }
+
+            string mapName = Traverse.Create(__instance).Method("GetMapNameOfCurrentScene").GetValue<string>();
+            bool canBeMapped = SceneCanBeMapped(mapName);
+            if (!canBeMapped)
+            {
+                return;
+            }
+
+            int currentIndex = Traverse.Create(__instance).Method("GetIndexOfCurrentScene").GetValue<int>();
+            int selectedIndex = Traverse.Create(__instance).Field("m_RegionSelectedIndex").GetValue<int>();
+            if (currentIndex == selectedIndex)
+            {
+                opts |= 4;
             }
         }
 
-        private static string NormalizeSceneName(string sceneName)
+        private static bool SceneCanBeMapped(string sceneName)
         {
-            if (!GameManager.IsStoryMode() && sceneName == "MountainTownRegion")
-            {
-                return "MountainTownRegionSandbox";
-            }
-
-            return sceneName;
+            return RegionManager.SceneIsRegion(sceneName) || sceneName == "DamRiverTransitionZoneB" || (sceneName == "HighwayTransitionZone" || sceneName == "RavineTransitionZone") || sceneName == "MountainTownRegionSandbox";
         }
     }
 }
